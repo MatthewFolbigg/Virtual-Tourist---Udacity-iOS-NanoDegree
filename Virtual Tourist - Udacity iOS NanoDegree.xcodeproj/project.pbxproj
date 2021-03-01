@@ -58,16 +58,48 @@
 		1F4F580C25ECFA3600940165 /* Virtual Tourist - Udacity iOS NanoDegree */ = {
 			isa = PBXGroup;
 			children = (
-				1F4F580D25ECFA3600940165 /* AppDelegate.swift */,
-				1F4F580F25ECFA3600940165 /* SceneDelegate.swift */,
-				1F4F581125ECFA3600940165 /* ViewController.swift */,
-				1F4F581325ECFA3600940165 /* Main.storyboard */,
+				1F4F582925ECFAB500940165 /* App  */,
+				1F4F582525ECFA7600940165 /* View */,
+				1F4F582625ECFA8C00940165 /* Model */,
+				1F4F582725ECFA9B00940165 /* Controller */,
 				1F4F581925ECFA3800940165 /* Assets.xcassets */,
-				1F4F581B25ECFA3800940165 /* LaunchScreen.storyboard */,
-				1F4F581E25ECFA3800940165 /* Info.plist */,
-				1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */,
 			);
 			path = "Virtual Tourist - Udacity iOS NanoDegree";
+			sourceTree = "<group>";
+		};
+		1F4F582525ECFA7600940165 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1F4F581325ECFA3600940165 /* Main.storyboard */,
+				1F4F581B25ECFA3800940165 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1F4F582625ECFA8C00940165 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1F4F582725ECFA9B00940165 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1F4F581125ECFA3600940165 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1F4F582925ECFAB500940165 /* App  */ = {
+			isa = PBXGroup;
+			children = (
+				1F4F580D25ECFA3600940165 /* AppDelegate.swift */,
+				1F4F580F25ECFA3600940165 /* SceneDelegate.swift */,
+				1F4F581E25ECFA3800940165 /* Info.plist */,
+			);
+			path = "App ";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
