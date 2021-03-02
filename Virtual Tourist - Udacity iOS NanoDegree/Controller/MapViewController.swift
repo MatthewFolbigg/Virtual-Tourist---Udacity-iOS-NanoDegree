@@ -15,13 +15,26 @@ class MapViewController: UIViewController {
     
     //MARK: Variables
     var placementPin: MKPointAnnotation!
+    var dropHaptic: UIImpactFeedbackGenerator?
+    var placingHaptic: UISelectionFeedbackGenerator?
+    var dragHaptic: UISelectionFeedbackGenerator?
+    var errorHaptic: UINotificationFeedbackGenerator?
     
     //MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpGuestures()
         placementPin = getTemporaryPin()
-        
+    }
+    
+    func prepareForHaptics(on: Bool) {
+        if on {
+            placingHaptic = on ? UISelectionFeedbackGenerator() : nil
+            placingHaptic?.prepare()
+            dropHaptic = on ? UIImpactFeedbackGenerator(style: .rigid) : nil
+            dragHaptic = on ? UISelectionFeedbackGenerator() : nil
+            errorHaptic = on ? UINotificationFeedbackGenerator() : nil
+        }
     }
     
 }
@@ -32,7 +45,8 @@ extension MapViewController: MKMapViewDelegate {
     //MARK: Map Annotation Views
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
        
-        if annotation.title == "TemporaryPlacementPin" {
+        switch annotation.title { //TODO: Find a better way to differentiate annotation type
+        case "TemporaryPlacementPin":
             if let placementView = mapView.dequeueReusableAnnotationView(withIdentifier: "placementView") {
                 return placementView
             } else {
@@ -40,8 +54,8 @@ extension MapViewController: MKMapViewDelegate {
                 setTemporaryPinView(view: placementView)
                 return placementView
             }
-        } else {
-        
+            
+        default:
             if let droppedPinView = mapView.dequeueReusableAnnotationView(withIdentifier: "droppedPinView") {
                 return droppedPinView
             } else {
@@ -51,6 +65,15 @@ extension MapViewController: MKMapViewDelegate {
             }
         }
     }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+        
+        if newState == .starting || oldState == .ending {
+            dragHaptic?.selectionChanged()
+        }
+        
+    }
+    
 }
 
 //MARK: Map Helpers
@@ -67,14 +90,16 @@ extension MapViewController {
     //UI for placement guide pin
     func setTemporaryPinView(view: MKPinAnnotationView) {
         view.animatesDrop = true
-        view.pinTintColor = .red
+        view.pinTintColor = .label
         view.alpha = 0.5
+        view.isDraggable = true
     }
     
     //UI for dropped pin
     func setDroppedPinView(view: MKPinAnnotationView) {
         view.animatesDrop = false
         view.pinTintColor = .red
+        view.isDraggable = true
     }
 }
 
@@ -88,36 +113,51 @@ extension MapViewController: UIGestureRecognizerDelegate {
     }
     
     @objc func mapLongPressHandler(sender: UILongPressGestureRecognizer) {
+        prepareForHaptics(on: true)
+        var currentPoint = sender.location(in: mapView)
+        let hiddenByFingerOffset: CGFloat = 30
         
-        let currentPoint = sender.location(in: mapView)
+        //Prevents pin being dropped in event users runs finger off the edge of the display
+        if isNearEdgeOfMap(point: currentPoint) == true {
+            sender.state = .cancelled
+        }
+        
+        currentPoint.y -= hiddenByFingerOffset
         let currentCoordinate = mapView.convert(currentPoint, toCoordinateFrom: mapView)
         let map = mapView!
         
         switch sender.state {
         case .began :
-            createPin(forMap: map, at: currentCoordinate)
+            startPlacementPin(forMap: map, at: currentCoordinate)
         case .changed :
-            longPressMoved(to: currentCoordinate)
+            movePlacementPin(to: currentCoordinate)
         case .cancelled :
-            print("cancelled")
-        case .possible :
-            print("possible")
+            abortPinPlacement()
         case .ended :
             dropPin(onMap: map, at: currentCoordinate)
-        default: break
+        default:
+            abortPinPlacement()
         }
+        prepareForHaptics(on: false)
     }
     
     //TODO: Add haptics
     //MARK: Long Press Began
-    func createPin(forMap map: MKMapView, at coordinate: CLLocationCoordinate2D) {
+    func startPlacementPin(forMap map: MKMapView, at coordinate: CLLocationCoordinate2D) {
         placementPin.coordinate = coordinate
         mapView.addAnnotation(placementPin)
+        placingHaptic?.selectionChanged()
     }
     
     //MARK: Long Press Changed
-    func longPressMoved(to coordinate: CLLocationCoordinate2D) {
+    func movePlacementPin(to coordinate: CLLocationCoordinate2D) {
         placementPin.coordinate = coordinate
+    }
+    
+    //MARK: Long Press Abort
+    func abortPinPlacement() {
+        mapView.removeAnnotation(placementPin)
+        errorHaptic?.notificationOccurred(.error)
     }
     
     //MARK: Long Press Ended
@@ -126,6 +166,20 @@ extension MapViewController: UIGestureRecognizerDelegate {
         let droppedPin = MKPointAnnotation()
         droppedPin.coordinate = coordinate
         mapView.addAnnotation(droppedPin)
+        dropHaptic?.impactOccurred()
+    }
+    
+    func isNearEdgeOfMap(point: CGPoint) -> Bool {
+        let displayRect = mapView.bounds
+        
+        let border: CGFloat = 5
+        
+        if point.x < border || point.x > displayRect.maxX - border ||
+        point.y < border || point.y > displayRect.maxY - border {
+            return true
+        } else {
+            return false
+        }
     }
 }
 
