@@ -26,19 +26,20 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="M0I-Q0-RiA" secondAttribute="trailing" id="2NX-XJ-GjJ"/>
+                            <constraint firstAttribute="trailing" secondItem="M0I-Q0-RiA" secondAttribute="trailing" id="2NX-XJ-GjJ"/>
                             <constraint firstAttribute="bottom" secondItem="M0I-Q0-RiA" secondAttribute="bottom" id="3Oz-45-vW7"/>
                             <constraint firstItem="M0I-Q0-RiA" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fp7-KW-T7s"/>
-                            <constraint firstItem="M0I-Q0-RiA" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="pwY-V5-B8Y"/>
+                            <constraint firstItem="M0I-Q0-RiA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pwY-V5-B8Y"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="st7-Fl-uwk"/>
                     <connections>
                         <outlet property="mapView" destination="M0I-Q0-RiA" id="Den-MX-fFt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="48" y="80"/>
+            <point key="canvasLocation" x="957.97101449275374" y="79.6875"/>
         </scene>
         <!--Photos View Controller-->
         <scene sceneID="Ep7-Ur-dkV">
@@ -53,7 +54,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zTy-kB-QNw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="868" y="80"/>
+            <point key="canvasLocation" x="1776.8115942028987" y="79.6875"/>
         </scene>
     </scenes>
     <resources>

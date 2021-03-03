@@ -51,18 +51,17 @@ extension MapViewController: MKMapViewDelegate {
                 return placementView
             } else {
                 let placementView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "placementView")
-                setTemporaryPinView(view: placementView)
+                setTemporaryPinUI(for: placementView)
                 return placementView
             }
             
         default:
-            if let droppedPinView = mapView.dequeueReusableAnnotationView(withIdentifier: "droppedPinView") {
-                return droppedPinView
-            } else {
-                let droppedPinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "droppedPinView")
-                setDroppedPinView(view: droppedPinView)
-                return droppedPinView
+            var droppedPinView = mapView.dequeueReusableAnnotationView(withIdentifier: "droppedPinView") as? MKPinAnnotationView
+            if droppedPinView == nil {
+                droppedPinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "droppedPinView")
+                setDroppedPinUI(for: droppedPinView)
             }
+            return droppedPinView
         }
     }
     
@@ -88,7 +87,7 @@ extension MapViewController {
     
     //MARK: Annotation UIs
     //UI for placement guide pin
-    func setTemporaryPinView(view: MKPinAnnotationView) {
+    func setTemporaryPinUI(for view: MKPinAnnotationView) {
         view.animatesDrop = true
         view.pinTintColor = .label
         view.alpha = 0.5
@@ -96,10 +95,14 @@ extension MapViewController {
     }
     
     //UI for dropped pin
-    func setDroppedPinView(view: MKPinAnnotationView) {
-        view.animatesDrop = false
-        view.pinTintColor = .red
-        view.isDraggable = true
+    func setDroppedPinUI(for view: MKPinAnnotationView?) {
+        view?.animatesDrop = false
+        view?.pinTintColor = .red
+        view?.isDraggable = true
+        //Callout Accessory
+        view?.canShowCallout = true
+        view?.leftCalloutAccessoryView = UIImageView(image: UIImage(systemName: "binoculars.fill"))
+        view?.leftCalloutAccessoryView?.tintColor = .purple
     }
 }
 
@@ -165,6 +168,7 @@ extension MapViewController: UIGestureRecognizerDelegate {
         mapView.removeAnnotation(placementPin)
         let droppedPin = MKPointAnnotation()
         droppedPin.coordinate = coordinate
+        droppedPin.title = "\(coordinate.latitude.rounded()) : \(coordinate.longitude.rounded())"
         mapView.addAnnotation(droppedPin)
         dropHaptic?.impactOccurred()
     }
