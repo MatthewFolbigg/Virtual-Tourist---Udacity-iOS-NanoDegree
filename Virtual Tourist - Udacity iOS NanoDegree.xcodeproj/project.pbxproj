@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F1BE42D25F0F5BE00588F39 /* FlickrApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */; };
+		1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */; };
 		1F4F580E25ECFA3600940165 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F580D25ECFA3600940165 /* AppDelegate.swift */; };
 		1F4F581025ECFA3600940165 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F580F25ECFA3600940165 /* SceneDelegate.swift */; };
 		1F4F581225ECFA3600940165 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F581125ECFA3600940165 /* MapViewController.swift */; };
@@ -18,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiClient.swift; sourceTree = "<group>"; };
+		1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiPrivate.swift; sourceTree = "<group>"; };
 		1F4F580A25ECFA3600940165 /* Virtual Tourist - Udacity iOS NanoDegree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist - Udacity iOS NanoDegree.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F4F580D25ECFA3600940165 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F4F580F25ECFA3600940165 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */,
+				1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */,
+				1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -175,10 +181,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F1BE42D25F0F5BE00588F39 /* FlickrApiClient.swift in Sources */,
 				1F4F581225ECFA3600940165 /* MapViewController.swift in Sources */,
 				1F4F580E25ECFA3600940165 /* AppDelegate.swift in Sources */,
 				1F4F581825ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld in Sources */,
 				1F4F581025ECFA3600940165 /* SceneDelegate.swift in Sources */,
+				1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */,
 				1F4F582C25ECFFD200940165 /* PhotosViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
