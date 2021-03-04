@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 class FlickrApiClient {
     
@@ -14,6 +15,8 @@ class FlickrApiClient {
      - Search for a list of photo objects based on a latiude and longitude
      - Use the photo information provided by the search to request individual image files
     */
+    
+    //bbox=0.1%2C0.1%2C0.1%2C0.1
     
     //MARK: Endpoint Construction
     enum Endpoints {
@@ -26,7 +29,7 @@ class FlickrApiClient {
         
         //MARK: Endpoints
         // Documentation: https://www.flickr.com/services/api/flickr.photos.search.html
-        case getPhotoIDsForLocation(lat: String, long: String)
+        case getPhotoIDsForLocation(lat: String, long: String, precision: locationPrecision)
         // Documentation: https://www.flickr.com/services/api/misc.urls.html
         case getPhoto(serverID: String, photoID: String, secret: String, sizeTag: sizeTag)
         
@@ -36,11 +39,13 @@ class FlickrApiClient {
         private var urlString: String {
             switch self {
             
-            case .getPhotoIDsForLocation(let lat, let lon) :
+            case .getPhotoIDsForLocation(let lat, let lon, let precision) :
+                let bbox = FlickrApiClient.getBbox(precision: precision, lati: lat, long: lon)
                 return
                     Endpoints.searchHostString +
                     Endpoints.searchMethodPathString + "&" +
                     Endpoints.apiKeyQueryString +
+                    "&bbox=" + bbox +
                     "&lat=\(lat)" + "&lon=\(lon)" +
                     Endpoints.searchResponseFormatQueryString
                 
@@ -63,15 +68,47 @@ class FlickrApiClient {
         case medium = "c" //800
         case large = "b" // 1024
     }
+    
+    enum locationPrecision {
+        case meter
+        case tenMeter
+        case hundredMeter
+        case killometer
+        case tenKillometer
+        
+        //This is a rough description, exact number differs and precision of longitude will vary depedning on latitude.
+        var boxSize: Double {
+            switch self {
+            case .meter: return 0.00001
+            case .tenMeter: return 0.0001
+            case .hundredMeter: return 0.001
+            case .killometer: return 0.01
+            case .tenKillometer: return 0.1
+            }
+        }
+    }
+    
+    class func getBbox(precision: locationPrecision, lati: String, long: String) -> String {
+        let sep = "%2C"
+        let box = precision.boxSize
+        let lat = Double(lati)!
+        let lon = Double(long)!
+        let minLat = String(lat - box)
+        let minLon = String(lon - box)
+        let maxLat = String(lat + box)
+        let maxLon = String(lon + box)
+        let bboxString: String = minLon + sep + minLat + sep + maxLon + sep + maxLat
+        return bboxString
+    }
 }
 
 //MARK: GET Requests
 extension FlickrApiClient {
     
     //MARK: Get Photo Information
-    class func getPhotoInformationFor(Latitude: String, Longitude: String, completion: @escaping ([flickrPhotoInformation]) -> Void) {
+    class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, completion: @escaping (flickrSearchResponsePage) -> Void) {
         
-        let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude).url
+        let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else {
@@ -82,15 +119,41 @@ extension FlickrApiClient {
             let decoder = JSONDecoder()
             do {
                 let decodedData = try decoder.decode(flickrSearchResponse.self, from: data)
-                completion(decodedData.photos.photo)
+                DispatchQueue.main.async {
+                    let page = decodedData.responsePage
+                    print("Page Number: \(page.pageNumber), Number of Pages: \(page.numberOfPages), Photos at Location: \(page.totalNumberOfPhotos)")
+                    completion(decodedData.responsePage)
+                }
             } catch {
                 print("Decoding Failed")
                 print(error)
             }
+        }
+        task.resume()
+    }
+    
+    //MARK: Get Photo Image
+    class func getImageFor(photo: flickrPhotoInformation, size: sizeTag, completion: @escaping (UIImage) -> Void) {
+        
+        let url = Endpoints.getPhoto(serverID: photo.serverId, photoID: photo.id, secret: photo.secret, sizeTag: size).url
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else {
+                print("Error Downloading Photo Image")
+                print(error?.localizedDescription ?? "")
+                return
+            }
+            
+            if let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    completion(image)
+                }
+            } else {
+                print("unable to get image from data")
+            }
+            
             
         }
         task.resume()
-        
         
     }
 }

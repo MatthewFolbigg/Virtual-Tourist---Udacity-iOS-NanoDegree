@@ -52,9 +52,17 @@
 			children = (
 				1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */,
 				1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */,
-				1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */,
+				1F1BE43825F13B1E00588F39 /* FlickrResponses */,
 			);
 			path = "Flickr API";
+			sourceTree = "<group>";
+		};
+		1F1BE43825F13B1E00588F39 /* FlickrResponses */ = {
+			isa = PBXGroup;
+			children = (
+				1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */,
+			);
+			path = FlickrResponses;
 			sourceTree = "<group>";
 		};
 		1F4F580125ECFA3600940165 = {

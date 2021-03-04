@@ -25,14 +25,6 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         setUpGuestures()
         placementPin = getTemporaryPin()
-        
-        //TEST
-        FlickrApiClient.getPhotoInformationFor(Latitude: "50", Longitude: "33") { (photosInfo) in
-            for photo in photosInfo {
-                print(photo.id)
-            }
-        }
-        
     }
     
     func prepareForHaptics(on: Bool) {
@@ -179,6 +171,8 @@ extension MapViewController: UIGestureRecognizerDelegate {
         droppedPin.title = "\(coordinate.latitude.rounded()) : \(coordinate.longitude.rounded())"
         mapView.addAnnotation(droppedPin)
         dropHaptic?.impactOccurred()
+        
+        getFlickrDataFor(droppedPin: droppedPin)
     }
     
     func isNearEdgeOfMap(point: CGPoint) -> Bool {
@@ -193,5 +187,34 @@ extension MapViewController: UIGestureRecognizerDelegate {
             return false
         }
     }
+}
+
+extension MapViewController {
+    
+    func getFlickrDataFor(droppedPin: MKPointAnnotation) {
+        let lat = String(droppedPin.coordinate.latitude)
+        let lon = String(droppedPin.coordinate.longitude)
+        print("\(lat):\(lon)")
+        FlickrApiClient.getPhotoInformationFor(Latitude: lat, Longitude: lon, precision: .hundredMeter) { (responsePage) in
+            let photosInfo = responsePage.photos
+            for photo in  photosInfo {
+                //print(photo.title)
+            }
+            self.getImagesFrom(photosData: photosInfo)
+            droppedPin.title = String(responsePage.totalNumberOfPhotos)
+        }
+    }
+    
+    func getImagesFrom(photosData: [flickrPhotoInformation]) {
+        if photosData.count > 0 {
+            let photo = photosData[0]
+            FlickrApiClient.getImageFor(photo: photo, size: .medium) { (image) in
+                let destination = self.storyboard?.instantiateViewController(identifier: "PhotosViewController") as! PhotosViewController
+                destination.image = image
+                self.present(destination, animated: true, completion: nil)
+            }
+        }
+    }
+    
 }
 
