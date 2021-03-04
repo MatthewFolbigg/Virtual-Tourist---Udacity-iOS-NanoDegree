@@ -25,6 +25,14 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         setUpGuestures()
         placementPin = getTemporaryPin()
+        
+        //TEST
+        FlickrApiClient.getPhotoInformationFor(Latitude: "50", Longitude: "33") { (photosInfo) in
+            for photo in photosInfo {
+                print(photo.id)
+            }
+        }
+        
     }
     
     func prepareForHaptics(on: Bool) {
