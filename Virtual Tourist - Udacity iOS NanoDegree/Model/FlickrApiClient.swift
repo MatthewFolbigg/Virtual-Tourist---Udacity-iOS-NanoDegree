@@ -10,7 +10,7 @@ import Foundation
 class FlickrApiClient {
     
     var baseUrlString = "https://api.flickr.com/services"
-    var apiKey = "a74edbd67a37cc3efecda3a4f694f145"
+    var apiKey = flickrPrivate.shared.apiKey
     
     enum Endpoints {
         case getPhotosForLocation
