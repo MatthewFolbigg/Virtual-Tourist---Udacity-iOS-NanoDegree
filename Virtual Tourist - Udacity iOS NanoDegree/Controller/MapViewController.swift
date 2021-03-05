@@ -195,7 +195,7 @@ extension MapViewController {
         let lat = String(droppedPin.coordinate.latitude)
         let lon = String(droppedPin.coordinate.longitude)
         print("\(lat):\(lon)")
-        FlickrApiClient.getPhotoInformationFor(Latitude: lat, Longitude: lon, precision: .hundredMeter) { (responsePage) in
+        FlickrApiClient.getPhotoInformationFor(Latitude: lat, Longitude: lon, precision: .killometer) { (responsePage) in
             let photosInfo = responsePage.photos
             for photo in  photosInfo {
                 //print(photo.title)
@@ -205,7 +205,7 @@ extension MapViewController {
         }
     }
     
-    func getImagesFrom(photosData: [flickrPhotoInformation]) {
+    func getImagesFrom(photosData: [FlickrPhotoInformation]) {
         if photosData.count > 0 {
             let photo = photosData[0]
             FlickrApiClient.getImageFor(photo: photo, size: .medium) { (image) in

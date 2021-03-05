@@ -8,8 +8,9 @@
 import Foundation
 
 //MARK: Photo Seach Response
-struct flickrSearchResponse: Codable {
-    let responsePage: flickrSearchResponsePage
+
+struct FlickrSearchResponse: Codable {
+    let responsePage: FlickrSearchResponsePage
     let status: String
     
     enum CodingKeys: String, CodingKey {
@@ -19,12 +20,12 @@ struct flickrSearchResponse: Codable {
 }
 
 //MARK: Response Page
-struct flickrSearchResponsePage: Codable {
+struct FlickrSearchResponsePage: Codable {
     let pageNumber: Int
     let numberOfPages: Int
     let photosPerPage: Int
     let totalNumberOfPhotos: String
-    let photos: [flickrPhotoInformation]
+    let photos: [FlickrPhotoInformation]
     
     enum CodingKeys: String, CodingKey {
         case pageNumber = "page"
@@ -36,7 +37,7 @@ struct flickrSearchResponsePage: Codable {
 }
 
 //MARK: Induvidual Photo Information
-struct flickrPhotoInformation: Codable {
+struct FlickrPhotoInformation: Codable {
     let id: String
     let ownerId: String
     let secret: String

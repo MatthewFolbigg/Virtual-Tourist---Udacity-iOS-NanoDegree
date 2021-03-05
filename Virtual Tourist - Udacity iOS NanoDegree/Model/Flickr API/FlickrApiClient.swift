@@ -106,7 +106,7 @@ class FlickrApiClient {
 extension FlickrApiClient {
     
     //MARK: Get Photo Information
-    class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, completion: @escaping (flickrSearchResponsePage) -> Void) {
+    class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, completion: @escaping (FlickrSearchResponsePage) -> Void) {
         
         let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -118,7 +118,7 @@ extension FlickrApiClient {
             
             let decoder = JSONDecoder()
             do {
-                let decodedData = try decoder.decode(flickrSearchResponse.self, from: data)
+                let decodedData = try decoder.decode(FlickrSearchResponse.self, from: data)
                 DispatchQueue.main.async {
                     let page = decodedData.responsePage
                     print("Page Number: \(page.pageNumber), Number of Pages: \(page.numberOfPages), Photos at Location: \(page.totalNumberOfPhotos)")
@@ -133,7 +133,7 @@ extension FlickrApiClient {
     }
     
     //MARK: Get Photo Image
-    class func getImageFor(photo: flickrPhotoInformation, size: sizeTag, completion: @escaping (UIImage) -> Void) {
+    class func getImageFor(photo: FlickrPhotoInformation, size: sizeTag, completion: @escaping (UIImage) -> Void) {
         
         let url = Endpoints.getPhoto(serverID: photo.serverId, photoID: photo.id, secret: photo.secret, sizeTag: size).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in

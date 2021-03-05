@@ -10,11 +10,12 @@
 		1F1BE42D25F0F5BE00588F39 /* FlickrApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */; };
 		1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */; };
 		1F1BE43525F1257500588F39 /* FlickrApiSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */; };
+		1F1BE43B25F2776600588F39 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43A25F2776600588F39 /* DataController.swift */; };
+		1F1BE44025F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43E25F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld */; };
 		1F4F580E25ECFA3600940165 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F580D25ECFA3600940165 /* AppDelegate.swift */; };
 		1F4F581025ECFA3600940165 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F580F25ECFA3600940165 /* SceneDelegate.swift */; };
 		1F4F581225ECFA3600940165 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F581125ECFA3600940165 /* MapViewController.swift */; };
 		1F4F581525ECFA3600940165 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F4F581325ECFA3600940165 /* Main.storyboard */; };
-		1F4F581825ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */; };
 		1F4F581A25ECFA3800940165 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F4F581925ECFA3800940165 /* Assets.xcassets */; };
 		1F4F581D25ECFA3800940165 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F4F581B25ECFA3800940165 /* LaunchScreen.storyboard */; };
 		1F4F582C25ECFFD200940165 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F582B25ECFFD200940165 /* PhotosViewController.swift */; };
@@ -24,12 +25,13 @@
 		1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiClient.swift; sourceTree = "<group>"; };
 		1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiPrivate.swift; sourceTree = "<group>"; };
 		1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiSearchResponses.swift; sourceTree = "<group>"; };
+		1F1BE43A25F2776600588F39 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		1F1BE43F25F2784100588F39 /* VirtualTouristDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTouristDataModel.xcdatamodel; sourceTree = "<group>"; };
 		1F4F580A25ECFA3600940165 /* Virtual Tourist - Udacity iOS NanoDegree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Tourist - Udacity iOS NanoDegree.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F4F580D25ECFA3600940165 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F4F580F25ECFA3600940165 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1F4F581125ECFA3600940165 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		1F4F581425ECFA3600940165 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1F4F581725ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodel"; sourceTree = "<group>"; };
 		1F4F581925ECFA3800940165 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F4F581C25ECFA3800940165 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F4F581E25ECFA3800940165 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -106,7 +108,8 @@
 		1F4F582625ECFA8C00940165 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */,
+				1F1BE43E25F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld */,
+				1F1BE43A25F2776600588F39 /* DataController.swift */,
 				1F1BE43225F0F95F00588F39 /* Flickr API */,
 			);
 			path = Model;
@@ -204,7 +207,8 @@
 				1F4F581225ECFA3600940165 /* MapViewController.swift in Sources */,
 				1F1BE43525F1257500588F39 /* FlickrApiSearchResponses.swift in Sources */,
 				1F4F580E25ECFA3600940165 /* AppDelegate.swift in Sources */,
-				1F4F581825ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld in Sources */,
+				1F1BE44025F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld in Sources */,
+				1F1BE43B25F2776600588F39 /* DataController.swift in Sources */,
 				1F4F581025ECFA3600940165 /* SceneDelegate.swift in Sources */,
 				1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */,
 				1F4F582C25ECFFD200940165 /* PhotosViewController.swift in Sources */,
@@ -411,13 +415,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		1F4F581625ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld */ = {
+		1F1BE43E25F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				1F4F581725ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodel */,
+				1F1BE43F25F2784100588F39 /* VirtualTouristDataModel.xcdatamodel */,
 			);
-			currentVersion = 1F4F581725ECFA3600940165 /* Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodel */;
-			path = "Virtual_Tourist___Udacity_iOS_NanoDegree.xcdatamodeld";
+			currentVersion = 1F1BE43F25F2784100588F39 /* VirtualTouristDataModel.xcdatamodel */;
+			path = VirtualTouristDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
