@@ -6,3 +6,25 @@
 //
 
 import Foundation
+import CoreData
+
+class DataController {
+    
+    let persistentContainer: NSPersistentContainer
+    var viewContext: NSManagedObjectContext { persistentContainer.viewContext }
+    
+    init(modelName: String) {
+        persistentContainer = NSPersistentContainer(name: modelName)
+    }
+    
+    func load(completeion: (() -> Void)? = nil) {
+        persistentContainer.loadPersistentStores { (storeDescription, error) in
+            guard error == nil else {
+                print("Error Loading Persistent Stores")
+                fatalError(error!.localizedDescription)
+            }
+            completeion?()
+        }
+    }
+    
+}
