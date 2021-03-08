@@ -11,10 +11,13 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    var dataController = DataController(modelName: "VirtualTouristDataModel")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        dataController.load {
+            print("Data loaded from coreData model successfully")
+        }
         return true
     }
 

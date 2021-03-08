@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class MapViewController: UIViewController {
 
@@ -14,6 +15,7 @@ class MapViewController: UIViewController {
     @IBOutlet var mapView: MKMapView!
     
     //MARK: Variables
+    var dataController: DataController!
     var placementPin: MKPointAnnotation!
     var dropHaptic: UIImpactFeedbackGenerator?
     var placingHaptic: UISelectionFeedbackGenerator?
@@ -23,6 +25,12 @@ class MapViewController: UIViewController {
     //MARK: Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let fetchRequest :NSFetchRequest<Pin> = Pin.fetchRequest()
+        if let pins = try? dataController.viewContext.fetch(fetchRequest) {
+            addAnnotationsFor(pins: pins)
+        }
+        
         setUpGuestures()
         placementPin = getTemporaryPin()
     }
@@ -83,6 +91,17 @@ extension MapViewController {
         let tempPin = MKPointAnnotation()
         tempPin.title = "TemporaryPlacementPin"
         return tempPin
+    }
+    
+    func addAnnotationsFor(pins: [Pin]) {
+        //Called both when pins are created and loaded from coreData
+        for pin in pins {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate.latitude = pin.latitude
+            annotation.coordinate.longitude = pin.longitude
+            annotation.title = pin.title
+            mapView.addAnnotation(annotation)
+        }
     }
     
     //MARK: Annotation UIs
@@ -166,13 +185,15 @@ extension MapViewController: UIGestureRecognizerDelegate {
     //MARK: Long Press Ended
     func dropPin(onMap map: MKMapView, at coordinate: CLLocationCoordinate2D) {
         mapView.removeAnnotation(placementPin)
-        let droppedPin = MKPointAnnotation()
-        droppedPin.coordinate = coordinate
-        droppedPin.title = "\(coordinate.latitude.rounded()) : \(coordinate.longitude.rounded())"
-        mapView.addAnnotation(droppedPin)
-        dropHaptic?.impactOccurred()
         
-        getFlickrDataFor(droppedPin: droppedPin)
+        let pin = Pin(context: dataController.viewContext)
+        pin.latitude = coordinate.latitude
+        pin.longitude = coordinate.longitude
+        pin.title = "Test"
+        addAnnotationsFor(pins: [pin])
+        getFlickrDataFor(pin: pin)
+        
+        try? dataController.viewContext.save()
     }
     
     func isNearEdgeOfMap(point: CGPoint) -> Bool {
@@ -189,22 +210,20 @@ extension MapViewController: UIGestureRecognizerDelegate {
     }
 }
 
+//MARK: Network Requests
 extension MapViewController {
     
-    func getFlickrDataFor(droppedPin: MKPointAnnotation) {
-        let lat = String(droppedPin.coordinate.latitude)
-        let lon = String(droppedPin.coordinate.longitude)
+    func getFlickrDataFor(pin: Pin) {
+        let lat = String(pin.latitude)
+        let lon = String(pin.longitude)
         print("\(lat):\(lon)")
         FlickrApiClient.getPhotoInformationFor(Latitude: lat, Longitude: lon, precision: .killometer) { (responsePage) in
             let photosInfo = responsePage.photos
-            for photo in  photosInfo {
-                //print(photo.title)
-            }
             self.getImagesFrom(photosData: photosInfo)
-            droppedPin.title = String(responsePage.totalNumberOfPhotos)
         }
     }
     
+    //TODO: Temportry Implementation for testing WILL BE CHANGED
     func getImagesFrom(photosData: [FlickrPhotoInformation]) {
         if photosData.count > 0 {
             let photo = photosData[0]
