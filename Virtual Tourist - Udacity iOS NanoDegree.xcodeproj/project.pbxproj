@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1F1BE42D25F0F5BE00588F39 /* FlickrApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */; };
-		1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */; };
 		1F1BE43525F1257500588F39 /* FlickrApiSearchResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */; };
 		1F1BE43B25F2776600588F39 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43A25F2776600588F39 /* DataController.swift */; };
 		1F1BE44025F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1F1BE43E25F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld */; };
@@ -23,7 +22,6 @@
 
 /* Begin PBXFileReference section */
 		1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiClient.swift; sourceTree = "<group>"; };
-		1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiPrivate.swift; sourceTree = "<group>"; };
 		1F1BE43425F1257500588F39 /* FlickrApiSearchResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrApiSearchResponses.swift; sourceTree = "<group>"; };
 		1F1BE43A25F2776600588F39 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		1F1BE43F25F2784100588F39 /* VirtualTouristDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTouristDataModel.xcdatamodel; sourceTree = "<group>"; };
@@ -53,7 +51,6 @@
 			isa = PBXGroup;
 			children = (
 				1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */,
-				1F1BE42F25F0F7B200588F39 /* FlickrApiPrivate.swift */,
 				1F1BE43825F13B1E00588F39 /* FlickrResponses */,
 			);
 			path = "Flickr API";
@@ -210,7 +207,6 @@
 				1F1BE44025F2784100588F39 /* VirtualTouristDataModel.xcdatamodeld in Sources */,
 				1F1BE43B25F2776600588F39 /* DataController.swift in Sources */,
 				1F4F581025ECFA3600940165 /* SceneDelegate.swift in Sources */,
-				1F1BE43025F0F7B200588F39 /* FlickrApiPrivate.swift in Sources */,
 				1F4F582C25ECFFD200940165 /* PhotosViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
