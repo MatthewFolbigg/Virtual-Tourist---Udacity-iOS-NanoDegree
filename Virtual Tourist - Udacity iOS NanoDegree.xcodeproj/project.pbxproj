@@ -18,6 +18,7 @@
 		1F4F581A25ECFA3800940165 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F4F581925ECFA3800940165 /* Assets.xcassets */; };
 		1F4F581D25ECFA3800940165 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F4F581B25ECFA3800940165 /* LaunchScreen.storyboard */; };
 		1F4F582C25ECFFD200940165 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F582B25ECFFD200940165 /* PhotosViewController.swift */; };
+		1FBA7B5325F654F300309F9A /* FlickrApiPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FBA7B5225F654F300309F9A /* FlickrApiPrivate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		1F4F581C25ECFA3800940165 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F4F581E25ECFA3800940165 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F4F582B25ECFFD200940165 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		1FBA7B5225F654F300309F9A /* FlickrApiPrivate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrApiPrivate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +53,7 @@
 			isa = PBXGroup;
 			children = (
 				1F1BE42C25F0F5BE00588F39 /* FlickrApiClient.swift */,
+				1FBA7B5225F654F300309F9A /* FlickrApiPrivate.swift */,
 				1F1BE43825F13B1E00588F39 /* FlickrResponses */,
 			);
 			path = "Flickr API";
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F1BE42D25F0F5BE00588F39 /* FlickrApiClient.swift in Sources */,
+				1FBA7B5325F654F300309F9A /* FlickrApiPrivate.swift in Sources */,
 				1F4F581225ECFA3600940165 /* MapViewController.swift in Sources */,
 				1F1BE43525F1257500588F39 /* FlickrApiSearchResponses.swift in Sources */,
 				1F4F580E25ECFA3600940165 /* AppDelegate.swift in Sources */,
