@@ -219,21 +219,12 @@ extension MapViewController {
         print("\(lat):\(lon)")
         FlickrApiClient.getPhotoInformationFor(Latitude: lat, Longitude: lon, precision: .killometer) { (responsePage) in
             let photosInfo = responsePage.photos
-            self.getImagesFrom(photosData: photosInfo)
+            let destination = self.storyboard?.instantiateViewController(identifier: "PhotoCollectionViewController") as! PhotoCollectionViewController
+            destination.photosInfo = photosInfo
+            self.present(destination, animated: true, completion: nil)
+
         }
     }
-    
-    //TODO: Temportry Implementation for testing WILL BE CHANGED
-    func getImagesFrom(photosData: [FlickrPhotoInformation]) {
-        if photosData.count > 0 {
-            let photo = photosData[0]
-            FlickrApiClient.getImageFor(photo: photo, size: .medium) { (image) in
-                let destination = self.storyboard?.instantiateViewController(identifier: "PhotosViewController") as! PhotosViewController
-                destination.image = image
-                self.present(destination, animated: true, completion: nil)
-            }
-        }
-    }
-    
+        
 }
 
