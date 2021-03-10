@@ -23,6 +23,11 @@ class MapViewController: UIViewController {
     var errorHaptic: UINotificationFeedbackGenerator?
     
     //MARK: Life Cycle
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -221,7 +226,9 @@ extension MapViewController {
             let photosInfo = responsePage.photos
             let destination = self.storyboard?.instantiateViewController(identifier: "PhotoCollectionViewController") as! PhotoCollectionViewController
             destination.photosInfo = photosInfo
-            self.present(destination, animated: true, completion: nil)
+            destination.dataController = self.dataController
+            destination.pin = pin
+            self.navigationController?.pushViewController(destination, animated: true)
 
         }
     }

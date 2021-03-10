@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lU6-lM-5iN">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Map View Controller-->
+        <!--Map-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MapViewController" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target" sceneMemberID="viewController">
@@ -33,25 +33,95 @@
                             <constraint firstItem="M0I-Q0-RiA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pwY-V5-B8Y"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="st7-Fl-uwk"/>
+                    <navigationItem key="navigationItem" title="Map" id="st7-Fl-uwk"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="mapView" destination="M0I-Q0-RiA" id="Den-MX-fFt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="957.97101449275374" y="79.6875"/>
+            <point key="canvasLocation" x="1179.7101449275362" y="79.6875"/>
         </scene>
-        <!--Photos View Controller-->
+        <!--Album-->
+        <scene sceneID="gMz-P8-aW1">
+            <objects>
+                <viewController storyboardIdentifier="PhotoCollectionViewController" title="Album" id="Or8-Ed-ci1" customClass="PhotoCollectionViewController" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="q4m-p4-iCm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pST-hE-Xfr">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VQ0-qI-vev">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" reuseIdentifier="PhotoCollectionCell" id="Sge-jI-1Q4" customClass="PhotoCollectionCell" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Acu-Az-B7l">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e4k-6i-DEG">
+                                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="128" id="b06-BJ-lkg"/>
+                                                        <constraint firstAttribute="width" secondItem="e4k-6i-DEG" secondAttribute="height" multiplier="1:1" id="jBz-eo-r9V"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="e4k-6i-DEG" secondAttribute="trailing" id="RWX-hy-0aq"/>
+                                                <constraint firstAttribute="bottom" secondItem="e4k-6i-DEG" secondAttribute="bottom" id="Trc-bd-KAP"/>
+                                                <constraint firstItem="e4k-6i-DEG" firstAttribute="top" secondItem="Acu-Az-B7l" secondAttribute="top" id="YTC-XP-Mbp"/>
+                                                <constraint firstItem="e4k-6i-DEG" firstAttribute="leading" secondItem="Acu-Az-B7l" secondAttribute="leading" id="jIe-gB-PfZ"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <connections>
+                                            <outlet property="photoImageView" destination="e4k-6i-DEG" id="9iX-1D-6mw"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="Or8-Ed-ci1" id="SR1-yZ-wFe"/>
+                                    <outlet property="delegate" destination="Or8-Ed-ci1" id="6MC-MS-VbL"/>
+                                </connections>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="1w4-4w-VEF"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="pST-hE-Xfr" firstAttribute="top" secondItem="1w4-4w-VEF" secondAttribute="top" id="0P1-Lf-Wj5"/>
+                            <constraint firstItem="1w4-4w-VEF" firstAttribute="trailing" secondItem="pST-hE-Xfr" secondAttribute="trailing" id="8BV-sn-YXw"/>
+                            <constraint firstItem="1w4-4w-VEF" firstAttribute="bottom" secondItem="pST-hE-Xfr" secondAttribute="bottom" id="vIz-0j-ZAL"/>
+                            <constraint firstItem="pST-hE-Xfr" firstAttribute="leading" secondItem="1w4-4w-VEF" secondAttribute="leading" id="ym4-bb-bne"/>
+                        </constraints>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="collectionView" destination="pST-hE-Xfr" id="Oul-qk-78B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vPF-XL-qED" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2029" y="80"/>
+        </scene>
+        <!--Photo Detail Controller-->
         <scene sceneID="Ep7-Ur-dkV">
             <objects>
-                <viewController storyboardIdentifier="PhotosViewController" id="2XW-fj-Ih4" customClass="PhotosViewController" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PhotoDetailController" id="2XW-fj-Ih4" customClass="PhotoDetailController" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="J0i-SQ-FYQ">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuq-aI-ZGy">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oM4-tI-bjt"/>
@@ -63,61 +133,32 @@
                             <constraint firstItem="oM4-tI-bjt" firstAttribute="trailing" secondItem="Tuq-aI-ZGy" secondAttribute="trailing" id="sBM-vN-9B8"/>
                         </constraints>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="imageView" destination="Tuq-aI-ZGy" id="aag-aA-ct7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zTy-kB-QNw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1774" y="-615"/>
+            <point key="canvasLocation" x="2817" y="76"/>
         </scene>
-        <!--Photo Collection View Controller-->
-        <scene sceneID="4GZ-1W-sTG">
+        <!--Navigation Controller-->
+        <scene sceneID="CRi-ON-nHo">
             <objects>
-                <collectionViewController storyboardIdentifier="PhotoCollectionViewController" id="fS3-YN-6t5" customClass="PhotoCollectionViewController" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" dataMode="prototypes" id="OX8-ad-ZYZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PSe-lo-fNh">
-                            <size key="itemSize" width="128" height="128"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="PhotoCollectionCell" id="Pqx-wF-spl" customClass="PhotoCollectionCell" customModule="Virtual_Tourist___Udacity_iOS_NanoDegree" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="5LG-V5-CI6">
-                                    <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sM4-rA-RUe">
-                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="sM4-rA-RUe" firstAttribute="leading" secondItem="5LG-V5-CI6" secondAttribute="leading" id="1xD-Vx-zt8"/>
-                                        <constraint firstItem="sM4-rA-RUe" firstAttribute="top" secondItem="5LG-V5-CI6" secondAttribute="top" id="FyC-jX-uo6"/>
-                                        <constraint firstAttribute="bottom" secondItem="sM4-rA-RUe" secondAttribute="bottom" id="S0P-mN-iWm"/>
-                                        <constraint firstAttribute="trailing" secondItem="sM4-rA-RUe" secondAttribute="trailing" id="Wzi-8n-vcc"/>
-                                    </constraints>
-                                </collectionViewCellContentView>
-                                <connections>
-                                    <outlet property="photoImageView" destination="sM4-rA-RUe" id="4yc-2q-ZiJ"/>
-                                </connections>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="fS3-YN-6t5" id="QpZ-bu-SQa"/>
-                            <outlet property="delegate" destination="fS3-YN-6t5" id="Llh-Bd-7OS"/>
-                        </connections>
-                    </collectionView>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PQH-qs-9G9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lU6-lM-5iN" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="KLJ-op-mY5">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="5sk-vY-2E7"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ISs-RE-CeL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1774" y="80"/>
+            <point key="canvasLocation" x="269.56521739130437" y="79.6875"/>
         </scene>
     </scenes>
     <resources>

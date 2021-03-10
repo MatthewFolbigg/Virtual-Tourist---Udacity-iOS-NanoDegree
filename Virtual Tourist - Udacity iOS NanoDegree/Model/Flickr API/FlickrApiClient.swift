@@ -142,7 +142,7 @@ extension FlickrApiClient {
                 print(error?.localizedDescription ?? "")
                 return
             }
-            
+
             if let image = UIImage(data: data) {
                 DispatchQueue.main.async {
                     completion(image)
