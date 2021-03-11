@@ -58,7 +58,7 @@ class PhotoCollectionViewController: UIViewController {
         let latitude = String(pin.latitude)
         let longitude = String(pin.longitude)
         let page = 1
-        FlickrApiClient.getPhotoInformationFor(Latitude: latitude, Longitude: longitude, precision: .killometer, page: page, completion: handlePhotoSearchResults)
+        FlickrApiClient.getPhotoInformationFor(Latitude: latitude, Longitude: longitude, precision: .tenKillometer, page: page, completion: handlePhotoSearchResults)
     }
     
     func handlePhotoSearchResults(response: FlickrSearchResponsePage) {
