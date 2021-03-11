@@ -67,7 +67,7 @@ class PhotoCollectionViewController: UIViewController {
         }
     }
     
-    func handleAndSaveImageData(data: Data, indexPath: IndexPath) {
+    func handleAndSaveImageData(data: Data) {
         let photo = Photo(context: dataController.viewContext)
         photo.data = data
         photo.pin = pin
@@ -80,7 +80,6 @@ class PhotoCollectionViewController: UIViewController {
         //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
         print("No Photos at Location")
     }
-    
 
 }
 
@@ -104,7 +103,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
         DispatchQueue.global().async {
             FlickrApiClient.getImageFor(photo: photoInformation, size: .large) { (imageData) in
                 DispatchQueue.main.async {
-                    self.handleAndSaveImageData(data: imageData, indexPath: indexPath)
+                    self.handleAndSaveImageData(data: imageData)
                     cell.photoImageView.image = UIImage(data: imageData)
                 }
             }
