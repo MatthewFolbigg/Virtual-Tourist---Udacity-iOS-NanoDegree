@@ -16,7 +16,7 @@ class FlickrApiClient {
      - Use the photo information provided by the search to request individual image files
     */
     
-    //bbox=0.1%2C0.1%2C0.1%2C0.1
+    //&per_page=100&page=10
     
     //MARK: Endpoint Construction
     enum Endpoints {
@@ -29,7 +29,7 @@ class FlickrApiClient {
         
         //MARK: Endpoints
         // Documentation: https://www.flickr.com/services/api/flickr.photos.search.html
-        case getPhotoIDsForLocation(lat: String, long: String, precision: locationPrecision)
+        case getPhotoIDsForLocation(lat: String, long: String, precision: locationPrecision, page: Int = 1)
         // Documentation: https://www.flickr.com/services/api/misc.urls.html
         case getPhoto(serverID: String, photoID: String, secret: String, sizeTag: sizeTag)
         
@@ -39,14 +39,16 @@ class FlickrApiClient {
         private var urlString: String {
             switch self {
             
-            case .getPhotoIDsForLocation(let lat, let lon, let precision) :
+            case .getPhotoIDsForLocation(let lat, let lon, let precision, let page) :
                 let bbox = FlickrApiClient.getBbox(precision: precision, lati: lat, long: lon)
+                //TODO: Add content type to only return photos (To not include screenshots etc)
                 return
                     Endpoints.searchHostString +
                     Endpoints.searchMethodPathString + "&" +
                     Endpoints.apiKeyQueryString +
                     "&bbox=" + bbox +
                     "&lat=\(lat)" + "&lon=\(lon)" +
+                    "&per_page=30&page=\(page)" +
                     Endpoints.searchResponseFormatQueryString
                 
             case .getPhoto(let serverID, let photoID, let secret, let sizeTag):
@@ -106,9 +108,9 @@ class FlickrApiClient {
 extension FlickrApiClient {
     
     //MARK: Get Photo Information
-    class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, completion: @escaping (FlickrSearchResponsePage) -> Void) {
+    class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, page: Int, completion: @escaping (FlickrSearchResponsePage) -> Void) {
         
-        let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision).url
+        let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision, page: page).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else {
@@ -133,7 +135,7 @@ extension FlickrApiClient {
     }
     
     //MARK: Get Photo Image
-    class func getImageFor(photo: FlickrPhotoInformation, size: sizeTag, completion: @escaping (UIImage) -> Void) {
+    class func getImageFor(photo: FlickrPhotoInformation, size: sizeTag, completion: @escaping (Data) -> Void) {
         
         let url = Endpoints.getPhoto(serverID: photo.serverId, photoID: photo.id, secret: photo.secret, sizeTag: size).url
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -142,16 +144,10 @@ extension FlickrApiClient {
                 print(error?.localizedDescription ?? "")
                 return
             }
-
-            if let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    completion(image)
-                }
-            } else {
-                print("unable to get image from data")
+        
+            DispatchQueue.main.async {
+                completion(data)
             }
-            
-            
         }
         task.resume()
         

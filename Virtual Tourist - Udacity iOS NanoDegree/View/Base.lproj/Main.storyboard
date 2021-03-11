@@ -76,6 +76,7 @@
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" red="0.15562266390000001" green="0.15562266390000001" blue="0.15562266390000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="e4k-6i-DEG" secondAttribute="trailing" id="RWX-hy-0aq"/>
                                                 <constraint firstAttribute="bottom" secondItem="e4k-6i-DEG" secondAttribute="bottom" id="Trc-bd-KAP"/>
@@ -127,10 +128,10 @@
                         <viewLayoutGuide key="safeArea" id="oM4-tI-bjt"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Tuq-aI-ZGy" firstAttribute="top" secondItem="oM4-tI-bjt" secondAttribute="top" id="5mw-kQ-QCd"/>
-                            <constraint firstItem="oM4-tI-bjt" firstAttribute="bottom" secondItem="Tuq-aI-ZGy" secondAttribute="bottom" id="FgG-JD-Qi3"/>
-                            <constraint firstItem="Tuq-aI-ZGy" firstAttribute="leading" secondItem="oM4-tI-bjt" secondAttribute="leading" id="kyI-Y5-Wrb"/>
-                            <constraint firstItem="oM4-tI-bjt" firstAttribute="trailing" secondItem="Tuq-aI-ZGy" secondAttribute="trailing" id="sBM-vN-9B8"/>
+                            <constraint firstItem="Tuq-aI-ZGy" firstAttribute="trailing" secondItem="oM4-tI-bjt" secondAttribute="trailing" id="5y0-wS-Sum"/>
+                            <constraint firstItem="Tuq-aI-ZGy" firstAttribute="leading" secondItem="oM4-tI-bjt" secondAttribute="leading" id="W0d-C4-qDe"/>
+                            <constraint firstItem="oM4-tI-bjt" firstAttribute="bottom" secondItem="Tuq-aI-ZGy" secondAttribute="bottom" id="eWi-Zu-wRv"/>
+                            <constraint firstItem="Tuq-aI-ZGy" firstAttribute="top" secondItem="oM4-tI-bjt" secondAttribute="top" id="lKH-WO-GvG"/>
                         </constraints>
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
