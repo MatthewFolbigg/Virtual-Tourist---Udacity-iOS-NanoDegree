@@ -18,7 +18,7 @@ class PhotoCollectionViewController: UIViewController {
     var dataController: DataController!
     var pin: Pin!
     var photosInfo: [FlickrPhotoInformation] = []
-    var photos: [UIImage] = []
+    var photos: [Photo] = []
     
     //MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -31,9 +31,7 @@ class PhotoCollectionViewController: UIViewController {
         fetchPhotosFromCoreData { (photos) in
             if photos.count > 0 {
                 print("Loading from Core Data")
-                for photo in photos {
-                    self.displayImageFrom(photo: photo)
-                }
+                self.photos = photos
             } else {
                 print("Loading From Flickr")
                 self.searchForPhotosAtPin()
@@ -64,33 +62,17 @@ class PhotoCollectionViewController: UIViewController {
         if Int(response.totalNumberOfPhotos) == 0 {
             handelNoPhotosForPin()
         } else {
-        //    photosInfo = response.photos
-        }
-        let photosInfo = response.photos
-        for photoInformation in photosInfo {
-            FlickrApiClient.getImageFor(photo: photoInformation, size: .large, completion: handleAndSaveImageData(data:))
+            photosInfo = response.photos
+            collectionView.reloadData()
         }
     }
     
-    func handleAndSaveImageData(data: Data) {
+    func handleAndSaveImageData(data: Data, indexPath: IndexPath) {
         let photo = Photo(context: dataController.viewContext)
         photo.data = data
         photo.pin = pin
-        self.displayImageFrom(photo: photo)
+        self.photos.append(photo)
         try? dataController.viewContext.save()
-    }
-    
-    //MARK: Display image from downloaded/loaded data
-    func displayImageFrom(photo: Photo) {
-        guard let photoData = photo.data else { return }
-        if let image = UIImage(data: photoData) {
-            DispatchQueue.main.async {
-                self.photos.append(image)
-                let indexPath = IndexPath(row: self.photos.count-1, section: 0)
-                self.collectionView.insertItems(at: [indexPath])
-            
-            }
-        }
     }
     
     //MARK: Other Helpers
@@ -106,20 +88,36 @@ class PhotoCollectionViewController: UIViewController {
 extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return photosInfo.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("CELL")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionCell", for: indexPath) as! PhotoCollectionCell
-        cell.photoImageView.image = photos[indexPath.row]
         
+        
+        cell.backgroundColor = .black
+        
+        
+        let photoInformation = photosInfo[indexPath.row]
+        
+        DispatchQueue.global().async {
+            FlickrApiClient.getImageFor(photo: photoInformation, size: .large) { (imageData) in
+                DispatchQueue.main.async {
+                    self.handleAndSaveImageData(data: imageData, indexPath: indexPath)
+                    cell.photoImageView.image = UIImage(data: imageData)
+                }
+            }
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let destination = storyboard?.instantiateViewController(identifier: "PhotoDetailController") as! PhotoDetailController
-        destination.image = photos[indexPath.row]
-        navigationController?.pushViewController(destination, animated: true)
+        if let image = UIImage(data: photos[indexPath.row].data!) {
+            destination.image = image
+            navigationController?.pushViewController(destination, animated: true)
+        }
     }
     
 }
