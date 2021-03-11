@@ -13,10 +13,12 @@ class PhotoCollectionViewController: UIViewController {
     
     //MARK: Outlets
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var newCollectionButton: UIBarButtonItem!
 
     //MARK: Variables
     var dataController: DataController!
     var pin: Pin!
+    
     var photosInfo: [FlickrPhotoInformation] = []
     var photos: [Photo] = []
     
@@ -24,6 +26,7 @@ class PhotoCollectionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.toolbar.isHidden = false
     }
     
     override func viewDidLoad() {
@@ -75,6 +78,10 @@ class PhotoCollectionViewController: UIViewController {
         try? dataController.viewContext.save()
     }
     
+    @IBAction func newCollectionBarButtonDidTapped() {
+        print("New Button Tapped")
+    }
+    
     //MARK: Other Helpers
     func handelNoPhotosForPin() {
         //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
@@ -91,12 +98,9 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("CELL")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionCell", for: indexPath) as! PhotoCollectionCell
-        
-        
+        cell.photoImageView.image = nil
         cell.backgroundColor = .black
-        
         
         let photoInformation = photosInfo[indexPath.row]
         

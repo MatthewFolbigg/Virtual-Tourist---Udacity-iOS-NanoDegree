@@ -52,7 +52,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="pST-hE-Xfr">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="VQ0-qI-vev">
                                     <size key="itemSize" width="128" height="128"/>
@@ -104,14 +104,25 @@
                             <constraint firstItem="pST-hE-Xfr" firstAttribute="leading" secondItem="1w4-4w-VEF" secondAttribute="leading" id="ym4-bb-bne"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="TA3-Aj-5CV"/>
+                        <barButtonItem title="New Album" id="2vl-lT-Gpf">
+                            <connections>
+                                <action selector="newCollectionBarButtonDidTapped" destination="Or8-Ed-ci1" id="bLk-qI-5P8"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="LV2-mf-KuY"/>
+                    </toolbarItems>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="pST-hE-Xfr" id="Oul-qk-78B"/>
+                        <outlet property="newCollectionButton" destination="2vl-lT-Gpf" id="ZXz-c4-nWv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vPF-XL-qED" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2029" y="80"/>
+            <point key="canvasLocation" x="1930" y="76"/>
         </scene>
         <!--Photo Detail Controller-->
         <scene sceneID="Ep7-Ur-dkV">
@@ -141,18 +152,23 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zTy-kB-QNw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2817" y="76"/>
+            <point key="canvasLocation" x="2680" y="76"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CRi-ON-nHo">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lU6-lM-5iN" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lU6-lM-5iN" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KLJ-op-mY5">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="dhc-O7-EKn">
+                        <rect key="frame" x="0.0" y="813" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="5sk-vY-2E7"/>
                     </connections>
