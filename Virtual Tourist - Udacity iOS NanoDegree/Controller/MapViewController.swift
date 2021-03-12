@@ -31,7 +31,8 @@ class MapViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationController?.toolbar.isHidden = true
+        navigationController?.setToolbarHidden(true, animated: true)
+        mapView.selectedAnnotations = []
     }
     
     override func viewDidLoad() {
@@ -40,6 +41,7 @@ class MapViewController: UIViewController {
         loadPinsFromCoreData()
         setUpMapGuestures()
         placementPin = getTemporaryPin()
+        self.additionalSafeAreaInsets.bottom = -120 //Corrects placement of apple maps legal & logo
     }
     
     //MARK: UI

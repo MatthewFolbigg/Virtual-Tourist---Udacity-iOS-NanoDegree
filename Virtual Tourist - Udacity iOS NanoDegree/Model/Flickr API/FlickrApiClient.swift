@@ -152,6 +152,10 @@ extension FlickrApiClient {
             }
         }
         task.resume()
-        
+    }
+    
+    class func cancelCurrentTasks() {
+        let session = URLSession.shared
+        session.invalidateAndCancel()
     }
 }

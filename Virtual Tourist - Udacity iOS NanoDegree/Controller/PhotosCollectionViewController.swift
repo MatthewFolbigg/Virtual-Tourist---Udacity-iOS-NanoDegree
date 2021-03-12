@@ -24,7 +24,6 @@ class PhotoCollectionViewController: UIViewController {
     var dataController: DataController!
     var pin: Pin!
     var photosPerRow = 3
-    //var flowLayout = UICollectionViewFlowLayout()
     
     var photosInfo: [FlickrPhotoInformation] = []
     var pagesAvailable: Int?
@@ -35,22 +34,23 @@ class PhotoCollectionViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationController?.toolbar.isHidden = false
+        navigationController?.setToolbarHidden(false, animated: true)
+        noPhotosLabel.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = pin.title
         loadPhotos()
-        //self.collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
     
     func loadPhotos() {
-        setActivityTo(on: true, hasPhotos: true)
+        setCoreDataActivityTo(true)
         fetchPhotosFromPin() {
             if self.photos.count == 0 {
                 self.searchForPhotosAtPin()
             }
+            self.setCoreDataActivityTo(false)
         }
     }
 
@@ -73,13 +73,13 @@ class PhotoCollectionViewController: UIViewController {
     func handelFetchedPhotos(photos: [Photo]) {
         print("Loaded from Core Data")
         self.photos = photos
-        setActivityTo(on: false, hasPhotos: true)
         self.collectionView.reloadData()
     }
     
     //MARK: Photo Search/Download
     func searchForPhotosAtPin(page: Int = 1) {
         print("Searching Flickr")
+        
         let latitude = String(pin.latitude)
         let longitude = String(pin.longitude)
         print("Page passed to Client: \(page)")
@@ -96,9 +96,9 @@ class PhotoCollectionViewController: UIViewController {
                 let blankPhoto = Photo(context: dataController.viewContext)
                 photos.append(blankPhoto)
             }
-            setActivityTo(on: false, hasPhotos: true)
             collectionView.reloadData()
         }
+        newCollectionButton.isEnabled = true
     }
     
     func downloadImageDataFor(photoInfo: FlickrPhotoInformation, completion: @escaping (Data) -> Void) {
@@ -119,8 +119,9 @@ class PhotoCollectionViewController: UIViewController {
     
     //MARK: Button Actions
     @IBAction func newCollectionBarButtonDidTapped() {
-        setActivityTo(on: false, hasPhotos: true)
-        
+        newCollectionButton.isEnabled = false
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: true)
+        noPhotosLabel.isHidden = true
         //Remove data for previous page
         for photo in photos {
             dataController.viewContext.delete(photo)
@@ -156,14 +157,11 @@ class PhotoCollectionViewController: UIViewController {
         
     //MARK: Other Helpers
     func handelNoPhotosForPin() {
-        //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
-        setActivityTo(on: false, hasPhotos: false)
+        noPhotosLabel.isHidden = false
         print("No Photos at Location")
     }
     
-    func setActivityTo(on: Bool, hasPhotos: Bool) {
-        noPhotosLabel.isHidden = hasPhotos
-        newCollectionButton.isEnabled = !on
+    func setCoreDataActivityTo(_ on: Bool) {
         if on {
             loadingActivityIndicator.startAnimating()
         } else {
@@ -201,7 +199,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
         cell.photoImageView.image = nil
         cell.imageDownloadIndicator.startAnimating()
         
-        if let photo = photos[indexPath.row].data {
+        if let photo = try photos[indexPath.row].data {
             //Add image previously fetched from coreData
             cell.imageDownloadIndicator.stopAnimating()
             cell.photoImageView.image = UIImage(data: photo)
@@ -217,6 +215,8 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
         }
         return cell
     }
+    
+    
     
     func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
         true
