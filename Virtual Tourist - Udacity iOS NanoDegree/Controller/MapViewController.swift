@@ -50,14 +50,11 @@ class MapViewController: UIViewController {
     }
     
     func setInstrcutionLableTo(dragging: Bool) {
-        let title = dragging ? "Drag to adjust location" : "Long Press to place a pin"
-        let colour = dragging ? UIColor.systemRed : UIColor.white
+        let title = dragging ? "Drag to adjust location" : "Long press to place a pin"
+        let colour = dragging ? UIColor.systemRed : UIColor.secondaryLabel
         self.instructionViewLabel.text = title
         self.instuctionImageView.tintColor = colour
-        
-        
     }
-    
     
     //MARK: Loading Pins
     func loadPinsFromCoreData() {

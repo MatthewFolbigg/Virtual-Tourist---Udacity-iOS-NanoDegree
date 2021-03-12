@@ -23,6 +23,8 @@ class PhotoCollectionViewController: UIViewController {
     //MARK: Variables
     var dataController: DataController!
     var pin: Pin!
+    var photosPerRow = 3
+    //var flowLayout = UICollectionViewFlowLayout()
     
     var photosInfo: [FlickrPhotoInformation] = []
     var pagesAvailable: Int?
@@ -40,6 +42,7 @@ class PhotoCollectionViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = pin.title
         loadPhotos()
+        //self.collectionView.setCollectionViewLayout(flowLayout, animated: false)
     }
     
     func loadPhotos() {
@@ -235,5 +238,26 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
                 navigationController?.pushViewController(destination, animated: true)
             }
         }
+    }
+}
+
+extension PhotoCollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let padding = 1 * (photosPerRow + 1)
+        let collectionWidth = collectionView.frame.width - CGFloat(padding)
+        let itemWidth = collectionWidth / CGFloat(photosPerRow) //- CGFloat(6)
+        return CGSize(width: itemWidth, height: itemWidth)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
     }
 }
