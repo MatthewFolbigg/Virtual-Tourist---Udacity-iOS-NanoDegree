@@ -114,15 +114,7 @@ class PhotoCollectionViewController: UIViewController {
     @IBAction func newCollectionBarButtonDidTapped() {
         loadingActivityIndicator.startAnimating()
         newCollectionButton.isEnabled = false
-        //TODO: Let the user know if there is only one page available
-        var page = 1
         
-        if let pages = pagesAvailable {
-            print("Pages Available: \(pages)")
-            page = Int.random(in: 1...pages)
-        }
-        print("Page Chosen: \(page)")
-            
         //Remove data for previous page
         for photo in photos {
             dataController.viewContext.delete(photo)
@@ -131,15 +123,29 @@ class PhotoCollectionViewController: UIViewController {
         photos = []
         photosInfo = []
         
+        //Get new page
+        let page = getRandomFlickrPageNumber()
         searchForPhotosAtPin(page: page)
     }
-    
+        
     //MARK: Other Helpers
     func handelNoPhotosForPin() {
         //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
         loadingActivityIndicator.stopAnimating()
         newCollectionButton.isEnabled = true
         print("No Photos at Location")
+    }
+    
+    func getRandomFlickrPageNumber() -> Int {
+        if let pages = pagesAvailable {
+            //Flickr search can only return 4000 images but its total page count can be much higher. If you ask for a page that contains image in the range above 4000 it seems to return page 1. This if statement will make sure the random page is withing the 4000 photo maxium (4000 photos/30 perPage = 133.3pages) Since many searchs can contain 100,000s of pages without this flickr will return page 1 most of the time.
+            if pages > 133 {
+                return Int.random(in: 1...130)
+            } else {
+                return Int.random(in: 1...pages)
+            }
+        }
+        return 1
     }
 
 }
