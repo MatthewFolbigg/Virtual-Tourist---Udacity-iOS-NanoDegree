@@ -23,6 +23,34 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="lKy-yx-1yQ"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J3N-3L-LzH">
+                                <rect key="frame" x="57" y="64" width="300" height="40"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Long Press to place a pin" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zf3-xd-Sec">
+                                        <rect key="frame" x="64" y="9.5" width="190.5" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mappin.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="61M-eW-ajK">
+                                        <rect key="frame" x="34" y="9.5" width="22" height="21"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="61M-eW-ajK" secondAttribute="height" multiplier="1:1" id="Lh3-jB-JVc"/>
+                                            <constraint firstAttribute="height" constant="22" id="wBB-Ob-02E"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="0UH-U1-YVZ"/>
+                                    <constraint firstItem="61M-eW-ajK" firstAttribute="centerY" secondItem="Zf3-xd-Sec" secondAttribute="centerY" id="B1J-7T-v4o"/>
+                                    <constraint firstItem="Zf3-xd-Sec" firstAttribute="centerY" secondItem="J3N-3L-LzH" secondAttribute="centerY" id="E9u-OH-3FF"/>
+                                    <constraint firstAttribute="width" constant="300" id="FCa-eH-Bae"/>
+                                    <constraint firstItem="Zf3-xd-Sec" firstAttribute="centerX" secondItem="J3N-3L-LzH" secondAttribute="centerX" constant="9" id="J5o-Yd-um4"/>
+                                    <constraint firstItem="Zf3-xd-Sec" firstAttribute="leading" secondItem="61M-eW-ajK" secondAttribute="trailing" constant="8" id="e02-Cx-5nb"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -31,17 +59,23 @@
                             <constraint firstAttribute="bottom" secondItem="M0I-Q0-RiA" secondAttribute="bottom" id="3Oz-45-vW7"/>
                             <constraint firstItem="M0I-Q0-RiA" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="fp7-KW-T7s"/>
                             <constraint firstItem="M0I-Q0-RiA" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="pwY-V5-B8Y"/>
+                            <constraint firstItem="J3N-3L-LzH" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wJd-2w-TP1"/>
+                            <constraint firstItem="J3N-3L-LzH" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="wlf-IS-7i8"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Map" id="st7-Fl-uwk"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="instructionView" destination="J3N-3L-LzH" id="PXz-q4-EEq"/>
+                        <outlet property="instructionViewLabel" destination="Zf3-xd-Sec" id="Edz-ql-ugW"/>
+                        <outlet property="instuctionImageView" destination="61M-eW-ajK" id="x41-rQ-UuJ"/>
                         <outlet property="mapView" destination="M0I-Q0-RiA" id="Den-MX-fFt"/>
+                        <segue destination="Or8-Ed-ci1" kind="show" id="f85-v5-GTs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1179.7101449275362" y="79.6875"/>
+            <point key="canvasLocation" x="1037.68115942029" y="79.6875"/>
         </scene>
         <!--Album-->
         <scene sceneID="gMz-P8-aW1">
@@ -103,15 +137,45 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="mUx-au-5WV">
                                 <rect key="frame" x="197" y="438" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No photos currently available for this location." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pii-CA-7kt">
+                                <rect key="frame" x="40" y="418" width="334" height="60"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jpE-C2-qzK">
+                                <rect key="frame" x="0.0" y="88" width="414" height="0.0"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap photos to remove them" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sOw-No-XwZ">
+                                        <rect key="frame" x="103.5" y="-10" width="207" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemRedColor"/>
+                                <constraints>
+                                    <constraint firstItem="sOw-No-XwZ" firstAttribute="centerX" secondItem="jpE-C2-qzK" secondAttribute="centerX" id="Clx-CE-IeD"/>
+                                    <constraint firstAttribute="height" id="luC-Mv-d2z"/>
+                                    <constraint firstItem="sOw-No-XwZ" firstAttribute="centerY" secondItem="jpE-C2-qzK" secondAttribute="centerY" id="nVU-Mf-dlj"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1w4-4w-VEF"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="pST-hE-Xfr" firstAttribute="top" secondItem="1w4-4w-VEF" secondAttribute="top" id="0P1-Lf-Wj5"/>
                             <constraint firstItem="1w4-4w-VEF" firstAttribute="trailing" secondItem="pST-hE-Xfr" secondAttribute="trailing" id="8BV-sn-YXw"/>
+                            <constraint firstItem="jpE-C2-qzK" firstAttribute="leading" secondItem="1w4-4w-VEF" secondAttribute="leading" id="Ehc-f4-7JN"/>
+                            <constraint firstItem="pii-CA-7kt" firstAttribute="centerX" secondItem="q4m-p4-iCm" secondAttribute="centerX" id="IC5-tE-9Nm"/>
+                            <constraint firstAttribute="trailing" secondItem="pii-CA-7kt" secondAttribute="trailing" constant="40" id="Zar-HG-yTq"/>
+                            <constraint firstItem="pii-CA-7kt" firstAttribute="leading" secondItem="q4m-p4-iCm" secondAttribute="leading" constant="40" id="b59-rk-FSm"/>
+                            <constraint firstItem="jpE-C2-qzK" firstAttribute="top" secondItem="1w4-4w-VEF" secondAttribute="top" id="eIi-i4-lUg"/>
+                            <constraint firstItem="pii-CA-7kt" firstAttribute="centerY" secondItem="q4m-p4-iCm" secondAttribute="centerY" id="g2X-sB-GwK"/>
+                            <constraint firstItem="jpE-C2-qzK" firstAttribute="trailing" secondItem="1w4-4w-VEF" secondAttribute="trailing" id="g99-Np-MGA"/>
                             <constraint firstItem="mUx-au-5WV" firstAttribute="centerY" secondItem="q4m-p4-iCm" secondAttribute="centerY" id="iDW-hv-zBX"/>
+                            <constraint firstItem="1w4-4w-VEF" firstAttribute="bottom" secondItem="pST-hE-Xfr" secondAttribute="bottom" id="syj-SR-Vql"/>
                             <constraint firstItem="mUx-au-5WV" firstAttribute="centerX" secondItem="q4m-p4-iCm" secondAttribute="centerX" id="un2-gH-ecu"/>
-                            <constraint firstItem="1w4-4w-VEF" firstAttribute="bottom" secondItem="pST-hE-Xfr" secondAttribute="bottom" id="vIz-0j-ZAL"/>
                             <constraint firstItem="pST-hE-Xfr" firstAttribute="leading" secondItem="1w4-4w-VEF" secondAttribute="leading" id="ym4-bb-bne"/>
                         </constraints>
                     </view>
@@ -124,17 +188,28 @@
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="LV2-mf-KuY"/>
                     </toolbarItems>
+                    <navigationItem key="navigationItem" id="QOk-Vo-WEb">
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="lEd-fe-6PG">
+                            <connections>
+                                <action selector="editButtonDidTapped" destination="Or8-Ed-ci1" id="gYf-IQ-qVu"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="pST-hE-Xfr" id="Oul-qk-78B"/>
+                        <outlet property="editBarButton" destination="lEd-fe-6PG" id="Cw2-JF-ycd"/>
                         <outlet property="loadingActivityIndicator" destination="mUx-au-5WV" id="cIA-3b-ZMI"/>
                         <outlet property="newCollectionButton" destination="2vl-lT-Gpf" id="ZXz-c4-nWv"/>
+                        <outlet property="noPhotosLabel" destination="pii-CA-7kt" id="eZC-PS-Mmr"/>
+                        <outlet property="tapToDeleteView" destination="jpE-C2-qzK" id="Nju-Au-rlu"/>
+                        <outlet property="tapToDeleteViewHeight" destination="luC-Mv-d2z" id="F0d-sq-iiC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vPF-XL-qED" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1930" y="76"/>
+            <point key="canvasLocation" x="1876.8115942028987" y="75.669642857142847"/>
         </scene>
         <!--Photo Detail Controller-->
         <scene sceneID="Ep7-Ur-dkV">
@@ -145,7 +220,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tuq-aI-ZGy">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oM4-tI-bjt"/>
@@ -157,7 +232,10 @@
                             <constraint firstItem="Tuq-aI-ZGy" firstAttribute="top" secondItem="oM4-tI-bjt" secondAttribute="top" id="lKH-WO-GvG"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="l9u-t0-b52"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="imageView" destination="Tuq-aI-ZGy" id="aag-aA-ct7"/>
                     </connections>
@@ -191,11 +269,15 @@
         </scene>
     </scenes>
     <resources>
+        <image name="mappin.circle.fill" catalog="system" width="128" height="121"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

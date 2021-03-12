@@ -13,6 +13,9 @@ class MapViewController: UIViewController {
 
     //MARK: IB Outlets
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet var instructionView: UIView!
+    @IBOutlet var instructionViewLabel: UILabel!
+    @IBOutlet var instuctionImageView: UIImageView!
     
     //MARK: Variables
     var dataController: DataController!
@@ -33,11 +36,30 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupInstructionView()
         loadPinsFromCoreData()
         setUpMapGuestures()
         placementPin = getTemporaryPin()
     }
     
+    //MARK: UI
+    func setupInstructionView() {
+        instructionView.layer.cornerRadius = instructionView.frame.height/2
+        instructionView.alpha = 0.9
+        setInstrcutionLableTo(dragging: false)
+    }
+    
+    func setInstrcutionLableTo(dragging: Bool) {
+        let title = dragging ? "Drag to adjust location" : "Long Press to place a pin"
+        let colour = dragging ? UIColor.systemRed : UIColor.white
+        self.instructionViewLabel.text = title
+        self.instuctionImageView.tintColor = colour
+        
+        
+    }
+    
+    
+    //MARK: Loading Pins
     func loadPinsFromCoreData() {
         let fetchRequest :NSFetchRequest<Pin> = Pin.fetchRequest()
         if let pins = try? dataController.viewContext.fetch(fetchRequest) {
@@ -64,6 +86,7 @@ class MapViewController: UIViewController {
         self.navigationController?.pushViewController(destination, animated: true)
     }
     
+    //MARK: Haptics
     func prepareForHaptics(on: Bool) {
         placingHaptic = on ? UISelectionFeedbackGenerator() : nil
         placingHaptic?.prepare()
@@ -176,6 +199,23 @@ extension MapViewController {
         button.setImage(buttonImage, for: .normal)
         view?.rightCalloutAccessoryView = button
     }
+    
+    func getTitleFor(pin: Pin, completetion: @escaping () -> Void) {
+        let location = CLLocation(latitude: pin.latitude, longitude: pin.longitude)
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if error == nil {
+                let placemark = placemarks?[0]
+                pin.locality = placemark?.locality
+                pin.region = placemark?.administrativeArea
+                let title = "\(pin.locality ?? "Somewhere"), \(pin.region ?? "Someplace")"
+                pin.title = title
+                completetion()
+            }
+            
+        }
+        
+    }
 }
 
 //MARK: Map Guesture Recognizers
@@ -221,6 +261,7 @@ extension MapViewController: UIGestureRecognizerDelegate {
         placementPin.coordinate = coordinate
         mapView.addAnnotation(placementPin)
         placingHaptic?.selectionChanged()
+        setInstrcutionLableTo(dragging: true)
     }
     
     //MARK: Long Press Changed
@@ -232,20 +273,23 @@ extension MapViewController: UIGestureRecognizerDelegate {
     func abortPinPlacement() {
         mapView.removeAnnotation(placementPin)
         errorHaptic?.notificationOccurred(.error)
+        setInstrcutionLableTo(dragging: false)
     }
     
     //MARK: Long Press Ended
     func dropPin(onMap map: MKMapView, at coordinate: CLLocationCoordinate2D) {
-        mapView.removeAnnotation(placementPin)
-
+        
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinate.latitude
         pin.longitude = coordinate.longitude
-        pin.title = "Test"
-        addAnnotationsFor(pins: [pin])
-        currentPins.append(pin)
-        openPhotoCollectionFor(pin: pin)
-        try? dataController.viewContext.save()
+        getTitleFor(pin: pin) {
+            self.mapView.removeAnnotation(self.placementPin)
+            self.addAnnotationsFor(pins: [pin])
+            self.currentPins.append(pin)
+            self.openPhotoCollectionFor(pin: pin)
+            try? self.dataController.viewContext.save()
+        }
+        setInstrcutionLableTo(dragging: false)
     }
     
 }

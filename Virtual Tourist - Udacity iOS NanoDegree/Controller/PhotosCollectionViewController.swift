@@ -14,7 +14,11 @@ class PhotoCollectionViewController: UIViewController {
     //MARK: Outlets
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var newCollectionButton: UIBarButtonItem!
+    @IBOutlet var editBarButton: UIBarButtonItem!
     @IBOutlet var loadingActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet var noPhotosLabel: UILabel!
+    @IBOutlet var tapToDeleteView: UIView!
+    @IBOutlet var tapToDeleteViewHeight: NSLayoutConstraint!
 
     //MARK: Variables
     var dataController: DataController!
@@ -34,11 +38,12 @@ class PhotoCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = pin.title
         loadPhotos()
     }
     
     func loadPhotos() {
-        loadingActivityIndicator.startAnimating()
+        setActivityTo(on: true, hasPhotos: true)
         fetchPhotosFromPin() {
             if self.photos.count == 0 {
                 self.searchForPhotosAtPin()
@@ -65,7 +70,7 @@ class PhotoCollectionViewController: UIViewController {
     func handelFetchedPhotos(photos: [Photo]) {
         print("Loaded from Core Data")
         self.photos = photos
-        self.loadingActivityIndicator.stopAnimating()
+        setActivityTo(on: false, hasPhotos: true)
         self.collectionView.reloadData()
     }
     
@@ -88,8 +93,7 @@ class PhotoCollectionViewController: UIViewController {
                 let blankPhoto = Photo(context: dataController.viewContext)
                 photos.append(blankPhoto)
             }
-            self.loadingActivityIndicator.stopAnimating()
-            newCollectionButton.isEnabled = true
+            setActivityTo(on: false, hasPhotos: true)
             collectionView.reloadData()
         }
     }
@@ -112,8 +116,7 @@ class PhotoCollectionViewController: UIViewController {
     
     //MARK: Button Actions
     @IBAction func newCollectionBarButtonDidTapped() {
-        loadingActivityIndicator.startAnimating()
-        newCollectionButton.isEnabled = false
+        setActivityTo(on: false, hasPhotos: true)
         
         //Remove data for previous page
         for photo in photos {
@@ -127,21 +130,52 @@ class PhotoCollectionViewController: UIViewController {
         let page = getRandomFlickrPageNumber()
         searchForPhotosAtPin(page: page)
     }
+    
+    @IBAction func editButtonDidTapped() {
+        collectionView.isEditing = !collectionView.isEditing
+        if collectionView.isEditing {
+            editBarButton.title = "Done"
+            tapToDeleteViewHeight.constant = 40
+            tapToDeleteView.layoutIfNeeded()
+            UIView.animate(withDuration: 0.2) {
+                self.tapToDeleteView.alpha = 0.9
+            }
+        } else {
+            editBarButton.title = "Edit"
+            UIView.animate(withDuration: 0.2) {
+                self.tapToDeleteView.alpha = 0
+            } completion: { (complete) in
+                self.tapToDeleteViewHeight.constant = 0
+                self.tapToDeleteView.layoutIfNeeded()
+            }
+        }
+    }
         
     //MARK: Other Helpers
     func handelNoPhotosForPin() {
         //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
-        loadingActivityIndicator.stopAnimating()
-        newCollectionButton.isEnabled = true
+        setActivityTo(on: false, hasPhotos: false)
         print("No Photos at Location")
     }
     
+    func setActivityTo(on: Bool, hasPhotos: Bool) {
+        noPhotosLabel.isHidden = hasPhotos
+        newCollectionButton.isEnabled = !on
+        if on {
+            loadingActivityIndicator.startAnimating()
+        } else {
+            loadingActivityIndicator.stopAnimating()
+        }
+    }
+    
+    
     func getRandomFlickrPageNumber() -> Int {
         if let pages = pagesAvailable {
-            //Flickr search can only return 4000 images but its total page count can be much higher. If you ask for a page that contains image in the range above 4000 it seems to return page 1. This if statement will make sure the random page is withing the 4000 photo maxium (4000 photos/30 perPage = 133.3pages) Since many searchs can contain 100,000s of pages without this flickr will return page 1 most of the time.
-            if pages > 133 {
+            //Flickr search can only return 4000 images but its total page count can be much higher. If you ask for a page that contains image in the range above 4000 it seems to return page 1. This if statement will make sure the random page is withing the 4000 photo maxium (4000 photos/30 perPage = 133.3pages) Since many searchs can contain 100,000s of pages without this flickr will return page 1 most of the time. Per Page is currently set in API Client
+            //TODO: Move this functionality to the Flickr API Client so if perPage needs to be changed in the future this can automatically adjust instead of hard coding a number
+            if pages > 133 && pages != 0{
                 return Int.random(in: 1...130)
-            } else {
+            } else if pages != 0 {
                 return Int.random(in: 1...pages)
             }
         }
@@ -181,12 +215,25 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let destination = storyboard?.instantiateViewController(identifier: "PhotoDetailController") as! PhotoDetailController
-        if let image = UIImage(data: photos[indexPath.row].data!) {
-            destination.image = image
-            navigationController?.pushViewController(destination, animated: true)
-        }
+    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
+        true
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView.isEditing {
+            //Delete Tapped Image
+            let photo = photos[indexPath.row]
+            dataController.viewContext.delete(photo)
+            photos.remove(at: indexPath.row)
+            collectionView.deleteItems(at: [indexPath])
+            try? dataController.viewContext.save()
+        } else {
+            //Open Tapped Image
+            let destination = storyboard?.instantiateViewController(identifier: "PhotoDetailController") as! PhotoDetailController
+            if let image = UIImage(data: photos[indexPath.row].data!) {
+                destination.image = image
+                navigationController?.pushViewController(destination, animated: true)
+            }
+        }
+    }
 }

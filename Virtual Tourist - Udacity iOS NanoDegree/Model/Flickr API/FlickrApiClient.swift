@@ -113,7 +113,6 @@ extension FlickrApiClient {
     class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, page: Int, completion: @escaping (FlickrSearchResponsePage) -> Void) {
         
         let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision, page: page).url
-        print(url)
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else {
