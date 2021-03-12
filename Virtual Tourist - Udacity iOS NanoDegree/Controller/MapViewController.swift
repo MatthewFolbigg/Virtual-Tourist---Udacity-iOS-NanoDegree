@@ -279,12 +279,13 @@ extension MapViewController: UIGestureRecognizerDelegate {
         let pin = Pin(context: dataController.viewContext)
         pin.latitude = coordinate.latitude
         pin.longitude = coordinate.longitude
+        self.dropHaptic?.impactOccurred()
         getTitleFor(pin: pin) {
             self.mapView.removeAnnotation(self.placementPin)
             self.addAnnotationsFor(pins: [pin])
             self.currentPins.append(pin)
-            self.openPhotoCollectionFor(pin: pin)
             try? self.dataController.viewContext.save()
+            self.openPhotoCollectionFor(pin: pin)
         }
         setInstrcutionLableTo(dragging: false)
     }
