@@ -14,13 +14,16 @@ class PhotoCollectionViewController: UIViewController {
     //MARK: Outlets
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var newCollectionButton: UIBarButtonItem!
+    @IBOutlet var loadingActivityIndicator: UIActivityIndicatorView!
 
     //MARK: Variables
     var dataController: DataController!
     var pin: Pin!
     
     var photosInfo: [FlickrPhotoInformation] = []
-    var photos: [Photo] = []
+    var pagesAvailable: Int?
+    var photos: [Photo] = [] //Data Source for collection View
+    
     
     //MARK: Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -31,60 +34,111 @@ class PhotoCollectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchPhotosFromCoreData { (photos) in
-            if photos.count > 0 {
-                print("Loading from Core Data")
-                self.photos = photos
-            } else {
-                print("Loading From Flickr")
+        loadPhotos()
+    }
+    
+    func loadPhotos() {
+        loadingActivityIndicator.startAnimating()
+        fetchPhotosFromPin() {
+            if self.photos.count == 0 {
                 self.searchForPhotosAtPin()
             }
         }
     }
 
-    //MARK: Photo Loading
-    func fetchPhotosFromCoreData(completion: @escaping ([Photo]) -> Void) {
+    //MARK: Photo Load from coreData
+    func fetchPhotosFromPin(completion: @escaping () -> Void) {
         let fetchRequest :NSFetchRequest<Photo> = Photo.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "pin == %@", argumentArray: [pin!])
         DispatchQueue.global().async {
-            if let savedPhotosFromPin = try? self.dataController.viewContext.fetch(fetchRequest) {
-                completion(savedPhotosFromPin)
+            if let fetchedPhotos = try? self.dataController.viewContext.fetch(fetchRequest) {
+                DispatchQueue.main.async {
+                    if fetchedPhotos.count > 0 {
+                        self.handelFetchedPhotos(photos: fetchedPhotos)
+                    }
+                    completion()
+                }
             }
         }
     }
     
+    func handelFetchedPhotos(photos: [Photo]) {
+        print("Loaded from Core Data")
+        self.photos = photos
+        self.loadingActivityIndicator.stopAnimating()
+        self.collectionView.reloadData()
+    }
+    
     //MARK: Photo Search/Download
-    func searchForPhotosAtPin() {
+    func searchForPhotosAtPin(page: Int = 1) {
+        print("Searching Flickr")
         let latitude = String(pin.latitude)
         let longitude = String(pin.longitude)
-        let page = 1
+        print("Page passed to Client: \(page)")
         FlickrApiClient.getPhotoInformationFor(Latitude: latitude, Longitude: longitude, precision: .tenKillometer, page: page, completion: handlePhotoSearchResults)
     }
     
     func handlePhotoSearchResults(response: FlickrSearchResponsePage) {
+        pagesAvailable = response.numberOfPages
         if Int(response.totalNumberOfPhotos) == 0 {
             handelNoPhotosForPin()
         } else {
             photosInfo = response.photos
+            for _ in photosInfo {
+                let blankPhoto = Photo(context: dataController.viewContext)
+                photos.append(blankPhoto)
+            }
+            self.loadingActivityIndicator.stopAnimating()
+            newCollectionButton.isEnabled = true
             collectionView.reloadData()
         }
     }
     
-    func handleAndSaveImageData(data: Data) {
-        let photo = Photo(context: dataController.viewContext)
+    func downloadImageDataFor(photoInfo: FlickrPhotoInformation, completion: @escaping (Data) -> Void) {
+        DispatchQueue.global().async {
+            FlickrApiClient.getImageFor(photo: photoInfo, size: .large) { (imageData) in
+                DispatchQueue.main.async {
+                    completion(imageData)
+                }
+            }
+        }
+    }
+    
+    func handleAndSaveImageData(data: Data, to photo: Photo) {
         photo.data = data
         photo.pin = pin
-        self.photos.append(photo)
         try? dataController.viewContext.save()
     }
     
+    //MARK: Button Actions
     @IBAction func newCollectionBarButtonDidTapped() {
-        print("New Button Tapped")
+        loadingActivityIndicator.startAnimating()
+        newCollectionButton.isEnabled = false
+        //TODO: Let the user know if there is only one page available
+        var page = 1
+        
+        if let pages = pagesAvailable {
+            print("Pages Available: \(pages)")
+            page = Int.random(in: 1...pages)
+        }
+        print("Page Chosen: \(page)")
+            
+        //Remove data for previous page
+        for photo in photos {
+            dataController.viewContext.delete(photo)
+            try? dataController.viewContext.save()
+        }
+        photos = []
+        photosInfo = []
+        
+        searchForPhotosAtPin(page: page)
     }
     
     //MARK: Other Helpers
     func handelNoPhotosForPin() {
         //TODO: Present a message to the user so they know there is no photos rather than assuming something went wrong
+        loadingActivityIndicator.stopAnimating()
+        newCollectionButton.isEnabled = true
         print("No Photos at Location")
     }
 
@@ -94,22 +148,28 @@ class PhotoCollectionViewController: UIViewController {
 extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photosInfo.count
+        return photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoCollectionCell", for: indexPath) as! PhotoCollectionCell
+        
+        //Set Placeholder
         cell.photoImageView.image = nil
-        cell.backgroundColor = .black
+        cell.imageDownloadIndicator.startAnimating()
         
-        let photoInformation = photosInfo[indexPath.row]
-        
-        DispatchQueue.global().async {
-            FlickrApiClient.getImageFor(photo: photoInformation, size: .large) { (imageData) in
-                DispatchQueue.main.async {
-                    self.handleAndSaveImageData(data: imageData)
-                    cell.photoImageView.image = UIImage(data: imageData)
-                }
+        if let photo = photos[indexPath.row].data {
+            //Add image previously fetched from coreData
+            cell.imageDownloadIndicator.stopAnimating()
+            cell.photoImageView.image = UIImage(data: photo)
+        } else {
+            //Download Photo from Flickr
+            let photoInformation = photosInfo[indexPath.row]
+            let photo = self.photos[indexPath.row]
+            downloadImageDataFor(photoInfo: photoInformation) { (imageData) in
+                self.handleAndSaveImageData(data: imageData, to: photo)
+                cell.imageDownloadIndicator.stopAnimating()
+                cell.photoImageView.image = UIImage(data: imageData)
             }
         }
         return cell

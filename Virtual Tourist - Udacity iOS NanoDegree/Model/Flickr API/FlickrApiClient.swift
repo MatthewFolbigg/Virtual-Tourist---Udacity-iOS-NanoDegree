@@ -16,7 +16,7 @@ class FlickrApiClient {
      - Use the photo information provided by the search to request individual image files
     */
     
-    //&per_page=100&page=10
+    //&sort=date-posted-desc
     
     //MARK: Endpoint Construction
     enum Endpoints {
@@ -26,6 +26,7 @@ class FlickrApiClient {
         private static let apiKeyQueryString = "api_key=\(flickrPrivate.shared.apiKey)"
         private static let searchMethodPathString = "rest/?method=flickr.photos.search"
         private static let searchResponseFormatQueryString = "&format=json&nojsoncallback=1"
+        private static let sortByDateDescending = "&sort=date-posted-desc"
         
         //MARK: Endpoints
         // Documentation: https://www.flickr.com/services/api/flickr.photos.search.html
@@ -48,6 +49,7 @@ class FlickrApiClient {
                     Endpoints.apiKeyQueryString +
                     "&bbox=" + bbox +
                     "&lat=\(lat)" + "&lon=\(lon)" +
+                    Endpoints.sortByDateDescending +
                     "&per_page=30&page=\(page)" +
                     Endpoints.searchResponseFormatQueryString
                 
@@ -111,6 +113,7 @@ extension FlickrApiClient {
     class func getPhotoInformationFor(Latitude: String, Longitude: String, precision: locationPrecision, page: Int, completion: @escaping (FlickrSearchResponsePage) -> Void) {
         
         let url = Endpoints.getPhotoIDsForLocation(lat: Latitude, long: Longitude, precision: precision, page: page).url
+        print(url)
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             
             guard let data = data else {

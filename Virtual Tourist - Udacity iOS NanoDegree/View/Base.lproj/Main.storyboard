@@ -75,9 +75,14 @@
                                                         <constraint firstAttribute="width" secondItem="e4k-6i-DEG" secondAttribute="height" multiplier="1:1" id="jBz-eo-r9V"/>
                                                     </constraints>
                                                 </imageView>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="iPP-BB-72n">
+                                                    <rect key="frame" x="54" y="54" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.15562266390000001" green="0.15562266390000001" blue="0.15562266390000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                             <constraints>
+                                                <constraint firstItem="iPP-BB-72n" firstAttribute="centerY" secondItem="Acu-Az-B7l" secondAttribute="centerY" id="53g-Fq-ANF"/>
+                                                <constraint firstItem="iPP-BB-72n" firstAttribute="centerX" secondItem="Acu-Az-B7l" secondAttribute="centerX" id="OJr-IJ-z2S"/>
                                                 <constraint firstAttribute="trailing" secondItem="e4k-6i-DEG" secondAttribute="trailing" id="RWX-hy-0aq"/>
                                                 <constraint firstAttribute="bottom" secondItem="e4k-6i-DEG" secondAttribute="bottom" id="Trc-bd-KAP"/>
                                                 <constraint firstItem="e4k-6i-DEG" firstAttribute="top" secondItem="Acu-Az-B7l" secondAttribute="top" id="YTC-XP-Mbp"/>
@@ -85,6 +90,7 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <connections>
+                                            <outlet property="imageDownloadIndicator" destination="iPP-BB-72n" id="sDD-SR-o2f"/>
                                             <outlet property="photoImageView" destination="e4k-6i-DEG" id="9iX-1D-6mw"/>
                                         </connections>
                                     </collectionViewCell>
@@ -94,12 +100,17 @@
                                     <outlet property="delegate" destination="Or8-Ed-ci1" id="6MC-MS-VbL"/>
                                 </connections>
                             </collectionView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="mUx-au-5WV">
+                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="1w4-4w-VEF"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="pST-hE-Xfr" firstAttribute="top" secondItem="1w4-4w-VEF" secondAttribute="top" id="0P1-Lf-Wj5"/>
                             <constraint firstItem="1w4-4w-VEF" firstAttribute="trailing" secondItem="pST-hE-Xfr" secondAttribute="trailing" id="8BV-sn-YXw"/>
+                            <constraint firstItem="mUx-au-5WV" firstAttribute="centerY" secondItem="q4m-p4-iCm" secondAttribute="centerY" id="iDW-hv-zBX"/>
+                            <constraint firstItem="mUx-au-5WV" firstAttribute="centerX" secondItem="q4m-p4-iCm" secondAttribute="centerX" id="un2-gH-ecu"/>
                             <constraint firstItem="1w4-4w-VEF" firstAttribute="bottom" secondItem="pST-hE-Xfr" secondAttribute="bottom" id="vIz-0j-ZAL"/>
                             <constraint firstItem="pST-hE-Xfr" firstAttribute="leading" secondItem="1w4-4w-VEF" secondAttribute="leading" id="ym4-bb-bne"/>
                         </constraints>
@@ -117,6 +128,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="pST-hE-Xfr" id="Oul-qk-78B"/>
+                        <outlet property="loadingActivityIndicator" destination="mUx-au-5WV" id="cIA-3b-ZMI"/>
                         <outlet property="newCollectionButton" destination="2vl-lT-Gpf" id="ZXz-c4-nWv"/>
                     </connections>
                 </viewController>
@@ -179,6 +191,9 @@
         </scene>
     </scenes>
     <resources>
+        <systemColor name="secondarySystemBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
