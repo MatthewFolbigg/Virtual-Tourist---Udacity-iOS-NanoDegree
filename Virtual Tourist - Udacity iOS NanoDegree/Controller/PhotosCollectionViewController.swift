@@ -111,10 +111,9 @@ class PhotoCollectionViewController: UIViewController {
         }
     }
     
-    func handleAndSaveImageData(data: Data, to photo: Photo) {
+    func handleImageData(data: Data, to photo: Photo) {
         photo.data = data
         photo.pin = pin
-        try? dataController.viewContext.save()
     }
     
     //MARK: Button Actions
@@ -199,7 +198,7 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
         cell.photoImageView.image = nil
         cell.imageDownloadIndicator.startAnimating()
         
-        if let photo = try photos[indexPath.row].data {
+        if let photo = photos[indexPath.row].data {
             //Add image previously fetched from coreData
             cell.imageDownloadIndicator.stopAnimating()
             cell.photoImageView.image = UIImage(data: photo)
@@ -208,10 +207,11 @@ extension PhotoCollectionViewController: UICollectionViewDelegate, UICollectionV
             let photoInformation = photosInfo[indexPath.row]
             let photo = self.photos[indexPath.row]
             downloadImageDataFor(photoInfo: photoInformation) { (imageData) in
-                self.handleAndSaveImageData(data: imageData, to: photo)
+                self.handleImageData(data: imageData, to: photo)
                 cell.imageDownloadIndicator.stopAnimating()
                 cell.photoImageView.image = UIImage(data: imageData)
             }
+            try? self.dataController.viewContext.save()
         }
         return cell
     }
