@@ -1,7 +1,7 @@
 # Virtual Touist
 Virtual Tourist is a project completed as part of the Udacity iOS Developer Nanodegree to practice:
 * concurrency and elegantly displaying images from an api in a collection view
-* Persisting data using teh Apple Core Data framework
+* Persisting data using the Apple Core Data framework
 
 Additional Learning:
 * First time implementing device haptics
